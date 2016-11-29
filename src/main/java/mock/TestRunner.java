@@ -5,7 +5,6 @@
  */
 package mock;
 
-import com.sun.scenario.effect.impl.sw.sse.SSEBlend_SRC_OUTPeer;
 import dtos.*;
 import etos.LoginException;
 import etos.NoAvailableDateException;
