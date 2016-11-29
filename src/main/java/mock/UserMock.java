@@ -31,27 +31,47 @@ public class UserMock implements UserInterface{
 
     private List<DepartureIdentifier> departures;
     private List<RouteIdentifier> routeSummaries;
+    private List<TravellingEntity> travellingEntities;
     
     public UserMock(){
         
+        
+        
+        //Route summary
         this.routeSummaries = new ArrayList<RouteIdentifier>();
+        RouteSummary rs1 = new RouteSummary(30, "SomeHarbourStart", "SomeHarbourEnd", 0);
+        RouteSummary rs2 = new RouteSummary(45, "SomeOtherHarbourStart", "SomeOtherHarbourEnd", 1);
+        this.routeSummaries.add(rs1);
+        this.routeSummaries.add(rs2);
+        //Route Summary end
         
         //Add Departures
         this.departures = new ArrayList<DepartureIdentifier>();
-        DepartureDetail dt1 = new DepartureDetail(LocalDateTime.now(),);
-        dt1.setDepartureId(0);
-        dt1.setDepartureTime();
-        RouteSummary rs1 = new RouteSummary();
-        rs1.setHarbourDestination("Kundby");
-        dt1.setRouteSummary(rs1);
+        DepartureDetail dt1 = new DepartureDetail(LocalDateTime.now(), rs1, 0);
+        DepartureDetail dt2 = new DepartureDetail(LocalDateTime.now(), rs2, 1);
         this.departures.add(dt1);
+        this.departures.add(dt2);
         //Departures end1
+        
+        //TravellingEntities
+        this.travellingEntities = new ArrayList<TravellingEntity>();
+        this.travellingEntities.add(new TravellingEntity());
     }
     
     
     @Override
     public List<DepartureIdentifier> getDepartures(LocalDate departureDate, RouteIdentifier route) throws NoAvailableDateException, UnexpectedErrorException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        
+        List<DepartureIdentifier> tempDepartures = new ArrayList<DepartureIdentifier>();
+        
+        for (DepartureIdentifier tempDeparture : this.departures) {
+                DepartureDetail tempDetail = (DepartureDetail)tempDeparture;
+                if(tempDetail.getRouteSummary().getRouteId() == route.getRouteId()) //&& tempDetail.getDepartureTime() == departureDate LocalDate and LocalDateTime, RIP
+                    tempDepartures.add(tempDeparture);
+            }
+        
+        
+        return tempDepartures;
     }
 
     @Override
@@ -62,7 +82,7 @@ public class UserMock implements UserInterface{
 
     @Override
     public List<RouteIdentifier> getAllRouteSummaries() throws UnexpectedErrorException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.routeSummaries;
     }
 
     @Override
@@ -72,7 +92,7 @@ public class UserMock implements UserInterface{
 
     @Override
     public List<TravellingEntity> getTravellingEntities() throws UnexpectedErrorException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        return this.travellingEntities;
     }
     
 }
